@@ -27,88 +27,100 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          Container(
-            padding: const EdgeInsets.all(10),
-            margin: const EdgeInsets.all(10),
-            height: 500,
-            decoration: BoxDecoration(
-              color: const Color.fromARGB(255, 255, 246, 197),
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.grey,
-                  blurRadius: 5,
-                )
-              ],
-            ),
-            child: TextFormField(
-              readOnly: readOnly,
-              maxLines: null,
-              controller: fullTextController,
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.all(10),
-            margin: const EdgeInsets.all(10),
-            decoration: const BoxDecoration(
-              color: Colors.amber,
-            ),
-            child: TextButton(
-              onPressed: () {
-                setState(() {
-                  readOnly = !readOnly;
-                });
-              },
-              child: Text(
-                readOnly == false ? "Modo leitura" : "Adicionar novo texto",
+      body: SingleChildScrollView(
+        child: Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              const SizedBox(height: 40),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.blue[200],
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: TextButton(
+                      onPressed: () {
+                        setState(() {
+                          readOnly = !readOnly;
+                        });
+                      },
+                      child: Text(
+                        readOnly == false ? "Modo leitura" : "Adicionar texto",
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.all(10),
-            margin: const EdgeInsets.all(10),
-            decoration: const BoxDecoration(
-              color: Colors.amber,
-            ),
-            child: TextFormField(
-              controller: textController,
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
               Container(
                 padding: const EdgeInsets.all(10),
                 margin: const EdgeInsets.all(10),
-                child: StreamBuilder<TextModel>(
-                    stream: homeDomain.textStreamController.stream,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        TextModel textModel = snapshot.data!;
-                        return Text(textModel.translatedText);
-                      } else {
-                        return const Text("Pesquise uma palavra");
-                      }
-                    }),
+                height: 500,
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 255, 246, 197),
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.grey,
+                      blurRadius: 5,
+                    )
+                  ],
+                ),
+                child: TextFormField(
+                  readOnly: readOnly,
+                  maxLines: null,
+                  controller: fullTextController,
+                ),
               ),
-              TextButton(
-                onPressed: () {
-                  homeDomain.translate(textController.text);
-                },
-                child: const Text("Traduzir"),
+              Container(
+                padding: const EdgeInsets.all(10),
+                margin: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.blue[200],
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: TextFormField(
+                  controller: textController,
+                ),
               ),
-              TextButton(
-                onPressed: () async {
-                  homeDomain.translate(textController.text);
-                },
-                child: const Text("Nova Palavra"),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    margin: const EdgeInsets.all(10),
+                    child: StreamBuilder<TextModel>(
+                      stream: homeDomain.textStreamController.stream,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          TextModel textModel = snapshot.data!;
+                          return Text(textModel.translatedText);
+                        } else {
+                          return const Text("Pesquise uma palavra");
+                        }
+                      },
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      homeDomain.translate(textController.text);
+                    },
+                    child: const Text("Traduzir"),
+                  ),
+                  TextButton(
+                    onPressed: () async {
+                      homeDomain.translate(textController.text);
+                    },
+                    child: const Text("Nova Palavra"),
+                  )
+                ],
               )
             ],
-          )
-        ],
+          ),
+        ),
       ),
     );
   }
