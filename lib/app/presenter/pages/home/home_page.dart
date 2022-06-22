@@ -73,6 +73,19 @@ class _HomePageState extends State<HomePage> {
                   readOnly: readOnly,
                   maxLines: null,
                   controller: fullTextController,
+                  decoration: InputDecoration(
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color:
+                            readOnly == true ? Colors.transparent : Colors.grey,
+                      ),
+                    ),
+                    focusedBorder: const UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ),
                 ),
               ),
               Container(
@@ -111,9 +124,7 @@ class _HomePageState extends State<HomePage> {
                     child: const Text("Traduzir"),
                   ),
                   TextButton(
-                    onPressed: () async {
-                      homeDomain.translate(textController.text);
-                    },
+                    onPressed: () {},
                     child: const Text("Nova Palavra"),
                   )
                 ],
