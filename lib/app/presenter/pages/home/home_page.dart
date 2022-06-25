@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:read_text/app/core/app_module/app_modules.dart';
 import 'package:read_text/app/core/model/text_model.dart';
 import 'package:read_text/app/domain/domains/home_domain.dart';
+import 'package:read_text/app/presenter/pages/favorite/favorite_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -33,27 +35,38 @@ class _HomePageState extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               const SizedBox(height: 40),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Colors.blue[200],
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: TextButton(
-                      onPressed: () {
-                        setState(() {
-                          readOnly = !readOnly;
-                        });
-                      },
-                      child: Text(
-                        readOnly == false ? "Modo leitura" : "Adicionar texto",
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20),
+                child: Row(
+                  children: [
+                    InkWell(
+                        onTap: () {},
+                        child: Icon(
+                          Iconsax.bookmark,
+                          color: Colors.blue,
+                        )),
+                    Spacer(),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.blue[200],
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: TextButton(
+                        onPressed: () {
+                          setState(() {
+                            readOnly = !readOnly;
+                          });
+                        },
+                        child: Text(
+                          readOnly == false
+                              ? "Modo leitura"
+                              : "Adicionar texto",
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               Container(
                 padding: const EdgeInsets.all(10),
@@ -70,6 +83,10 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
                 child: TextFormField(
+                  onTap: () {
+                    homeDomain.translate(textController.text);
+                  },
+                  style: TextStyle(fontSize: 20),
                   readOnly: readOnly,
                   maxLines: null,
                   controller: fullTextController,
@@ -80,9 +97,10 @@ class _HomePageState extends State<HomePage> {
                             readOnly == true ? Colors.transparent : Colors.grey,
                       ),
                     ),
-                    focusedBorder: const UnderlineInputBorder(
+                    focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
-                        color: Colors.grey,
+                        color:
+                            readOnly == true ? Colors.transparent : Colors.grey,
                       ),
                     ),
                   ),
