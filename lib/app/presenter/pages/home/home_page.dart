@@ -161,9 +161,9 @@ class _HomePageState extends State<HomePage> {
         padding: const EdgeInsets.all(10),
         height: 120,
         width: MediaQuery.of(context).size.width,
-        decoration: const BoxDecoration(
-          color: Colors.transparent,
-          borderRadius: BorderRadius.only(
+        decoration: BoxDecoration(
+          color: Colors.blue[200],
+          borderRadius: const BorderRadius.only(
             topRight: Radius.circular(60),
           ),
         ),
@@ -184,7 +184,6 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Container(
-                    color: Colors.black38,
                     padding: const EdgeInsets.all(10),
                     width: MediaQuery.of(context).size.width * 0.7,
                     child: SingleChildScrollView(
