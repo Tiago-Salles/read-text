@@ -1,11 +1,11 @@
 class TextModel {
-  String translatedText;
-  String sourceLanguage;
-  String source;
+  String? translatedText;
+  String? sourceLanguage;
+  String? source;
 
   TextModel({
-    required this.translatedText,
-    required this.source,
-    required this.sourceLanguage,
+    this.translatedText,
+    this.source,
+    this.sourceLanguage,
   });
 }

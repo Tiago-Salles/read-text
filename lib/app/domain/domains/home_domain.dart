@@ -6,12 +6,14 @@ class HomeDomain {
   TranslatorService translatorService;
   HomeDomain({required this.translatorService});
 
-  StreamController<TextModel> textStreamController =
-      StreamController<TextModel>.broadcast();
+  StreamController<TextModel?> textStreamController =
+      StreamController<TextModel?>.broadcast();
 
-  void translate(String sourceText) async {
+  void translate(String sourceText, String? languageFrom) async {
     try {
-      translatorService.translateText(sourceText).then((textModel) {
+      await translatorService
+          .translateText(sourceText, languageFrom)
+          .then((textModel) {
         textStreamController.sink.add(textModel);
       });
     } catch (e) {
