@@ -6,6 +6,115 @@ import 'package:read_text/app/core/app_module/app_modules.dart';
 import 'package:read_text/app/core/model/text_model.dart';
 import 'package:read_text/app/domain/domains/home_domain.dart';
 
+final langs = {
+  'auto': 'Automatic',
+  'af': 'Afrikaans',
+  'sq': 'Albanian',
+  'am': 'Amharic',
+  'ar': 'Arabic',
+  'hy': 'Armenian',
+  'az': 'Azerbaijani',
+  'eu': 'Basque',
+  'be': 'Belarusian',
+  'bn': 'Bengali',
+  'bs': 'Bosnian',
+  'bg': 'Bulgarian',
+  'ca': 'Catalan',
+  'ceb': 'Cebuano',
+  'ny': 'Chichewa',
+  'zh-cn': 'Chinese Simplified',
+  'zh-tw': 'Chinese Traditional',
+  'co': 'Corsican',
+  'hr': 'Croatian',
+  'cs': 'Czech',
+  'da': 'Danish',
+  'nl': 'Dutch',
+  'en': 'English',
+  'eo': 'Esperanto',
+  'et': 'Estonian',
+  'tl': 'Filipino',
+  'fi': 'Finnish',
+  'fr': 'French',
+  'fy': 'Frisian',
+  'gl': 'Galician',
+  'ka': 'Georgian',
+  'de': 'German',
+  'el': 'Greek',
+  'gu': 'Gujarati',
+  'ht': 'Haitian Creole',
+  'ha': 'Hausa',
+  'haw': 'Hawaiian',
+  'iw': 'Hebrew',
+  'hi': 'Hindi',
+  'hmn': 'Hmong',
+  'hu': 'Hungarian',
+  'is': 'Icelandic',
+  'ig': 'Igbo',
+  'id': 'Indonesian',
+  'ga': 'Irish',
+  'it': 'Italian',
+  'ja': 'Japanese',
+  'jw': 'Javanese',
+  'kn': 'Kannada',
+  'kk': 'Kazakh',
+  'km': 'Khmer',
+  'ko': 'Korean',
+  'ku': 'Kurdish (Kurmanji)',
+  'ky': 'Kyrgyz',
+  'lo': 'Lao',
+  'la': 'Latin',
+  'lv': 'Latvian',
+  'lt': 'Lithuanian',
+  'lb': 'Luxembourgish',
+  'mk': 'Macedonian',
+  'mg': 'Malagasy',
+  'ms': 'Malay',
+  'ml': 'Malayalam',
+  'mt': 'Maltese',
+  'mi': 'Maori',
+  'mr': 'Marathi',
+  'mn': 'Mongolian',
+  'my': 'Myanmar (Burmese)',
+  'ne': 'Nepali',
+  'no': 'Norwegian',
+  'ps': 'Pashto',
+  'fa': 'Persian',
+  'pl': 'Polish',
+  'pt': 'Portuguese',
+  'pa': 'Punjabi',
+  'ro': 'Romanian',
+  'ru': 'Russian',
+  'sm': 'Samoan',
+  'gd': 'Scots Gaelic',
+  'sr': 'Serbian',
+  'st': 'Sesotho',
+  'sn': 'Shona',
+  'sd': 'Sindhi',
+  'si': 'Sinhala',
+  'sk': 'Slovak',
+  'sl': 'Slovenian',
+  'so': 'Somali',
+  'es': 'Spanish',
+  'su': 'Sundanese',
+  'sw': 'Swahili',
+  'sv': 'Swedish',
+  'tg': 'Tajik',
+  'ta': 'Tamil',
+  'te': 'Telugu',
+  'th': 'Thai',
+  'tr': 'Turkish',
+  'uk': 'Ukrainian',
+  'ur': 'Urdu',
+  'uz': 'Uzbek',
+  'ug': 'Uyghur',
+  'vi': 'Vietnamese',
+  'cy': 'Welsh',
+  'xh': 'Xhosa',
+  'yi': 'Yiddish',
+  'yo': 'Yoruba',
+  'zu': 'Zulu'
+};
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -32,6 +141,9 @@ class _HomePageState extends State<HomePage> {
   bool readOnly = false;
   bool selectedWord = false;
   List<String> moreThanTwoWordsList = [];
+  String? language;
+  String? item;
+  final List<DropdownMenuItem> dropdownItems = [];
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +156,30 @@ class _HomePageState extends State<HomePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
+                DropdownButton<String>(
+                  value: item ?? "English",
+                  items: langs.values
+                      .map(
+                        (value) => DropdownMenuItem(
+                          value: value,
+                          onTap: () {},
+                          enabled: true,
+                          child: SizedBox(child: Text(value)),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: (itemValue) {
+                    setState(() {
+                      item = itemValue;
+                      langs.forEach((key, value) {
+                        if (value == itemValue) {
+                          language = key;
+                        }
+                      });
+                    });
+                  },
+                ),
+                const SizedBox(width: 50),
                 Container(
                   margin: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
@@ -92,7 +228,7 @@ class _HomePageState extends State<HomePage> {
                         wordButton = GestureDetector(
                           onTap: () {
                             HapticFeedback.mediumImpact();
-                            homeDomain.translate(word);
+                            homeDomain.translate(word, language);
                           },
                           onLongPress: () {
                             if (moreThanTwoWordsList.contains("$word ")) {
@@ -106,13 +242,13 @@ class _HomePageState extends State<HomePage> {
                                 HapticFeedback.vibrate();
                                 moreThanTwoWordsList.remove("$word ");
                                 String phrase = moreThanTwoWordsList.join();
-                                homeDomain.translate(phrase);
+                                homeDomain.translate(phrase, language);
                               }
                             } else {
                               HapticFeedback.vibrate();
                               moreThanTwoWordsList.add("$word ");
                               String phrase = moreThanTwoWordsList.join();
-                              homeDomain.translate(phrase);
+                              homeDomain.translate(phrase, language);
                             }
                           },
                           child: Text(

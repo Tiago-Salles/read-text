@@ -9,9 +9,11 @@ class HomeDomain {
   StreamController<TextModel?> textStreamController =
       StreamController<TextModel?>.broadcast();
 
-  void translate(String sourceText) async {
+  void translate(String sourceText, String? languageFrom) async {
     try {
-      await translatorService.translateText(sourceText).then((textModel) {
+      await translatorService
+          .translateText(sourceText, languageFrom)
+          .then((textModel) {
         textStreamController.sink.add(textModel);
       });
     } catch (e) {
