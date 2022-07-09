@@ -48,7 +48,7 @@ class WordButton extends StatelessWidget {
         "$word  ",
         style: const TextStyle(
           fontSize: 18,
-          color: Colors.black,
+          color: Color.fromARGB(255, 221, 221, 221),
         ),
       ),
     );

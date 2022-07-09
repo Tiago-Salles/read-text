@@ -43,36 +43,50 @@ class _BodyHomePageState extends State<BodyHomePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  DropdownButton<String>(
-                    value: item,
-                    items: LanguageUtils.languages.values
-                        .map(
-                          (value) => DropdownMenuItem(
-                            value: value,
-                            onTap: () {},
-                            enabled: true,
-                            child: SizedBox(
-                              child: Text(value),
+                  Container(
+                    padding: EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Color.fromARGB(255, 194, 207, 222),
+                    ),
+                    child: DropdownButton<String>(
+                      borderRadius: BorderRadius.circular(20),
+                      value: item,
+                      items: LanguageUtils.languages.values
+                          .map(
+                            (value) => DropdownMenuItem(
+                              value: value,
+                              onTap: () {},
+                              enabled: true,
+                              child: SizedBox(
+                                child: Text(
+                                  value,
+                                  style: TextStyle(
+                                    color: Colors.black54,
+                                    fontStyle: FontStyle.italic,
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                        )
-                        .toList(),
-                    onChanged: (itemValue) {
-                      setState(() {
-                        item = itemValue!;
-                        LanguageUtils.languages.forEach((key, value) {
-                          if (value == itemValue) {
-                            language = key;
-                          }
+                          )
+                          .toList(),
+                      onChanged: (itemValue) {
+                        setState(() {
+                          item = itemValue!;
+                          LanguageUtils.languages.forEach((key, value) {
+                            if (value == itemValue) {
+                              language = key;
+                            }
+                          });
                         });
-                      });
-                    },
+                      },
+                    ),
                   ),
                   const SizedBox(width: 50),
                   Container(
                     margin: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color: Colors.blue[200],
+                      color: Color.fromARGB(255, 61, 137, 200),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: TextButton(
@@ -83,6 +97,7 @@ class _BodyHomePageState extends State<BodyHomePage> {
                       },
                       child: Text(
                         readOnly == false ? "Modo leitura" : "Adicionar texto",
+                        style: TextStyle(color: Colors.white),
                       ),
                     ),
                   ),
@@ -94,14 +109,8 @@ class _BodyHomePageState extends State<BodyHomePage> {
                 height: 600,
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 255, 246, 197),
+                  color: Colors.black87,
                   borderRadius: BorderRadius.circular(20),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Colors.grey,
-                      blurRadius: 5,
-                    )
-                  ],
                 ),
                 child: SingleChildScrollView(
                   child: readOnly
@@ -114,6 +123,10 @@ class _BodyHomePageState extends State<BodyHomePage> {
                       : TextFormField(
                           maxLines: null,
                           controller: fullTextController,
+                          cursorColor: Colors.white,
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
                           decoration: const InputDecoration(
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(
